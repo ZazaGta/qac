@@ -46,13 +46,14 @@ html,body{background:#050400;color:#c9a84c;font-family:'Rajdhani',sans-serif;min
 /* INFO BLOCK */
 .info-block{background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.1);border-radius:4px;padding:8px 10px;margin-bottom:8px}
 .info-row{display:flex;justify-content:space-between;align-items:center;padding:2px 0}
-.info-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;color:#4a3810;letter-spacing:1px}
-.info-val{font-family:'Share Tech Mono',monospace;font-size:10px;color:#c9a84c}
+.info-lbl{font-family:'Share Tech Mono',monospace;font-size:11px;color:#8a6820;letter-spacing:1px}
+.info-val{font-family:'Share Tech Mono',monospace;font-size:13px;color:#e8c86c;font-weight:bold}
 
 /* PENDING */
 .pending{text-align:center;padding:10px;font-family:'Share Tech Mono',monospace;font-size:8px;color:#2a1f00;letter-spacing:2px;border:1px dashed rgba(201,168,76,.08);border-radius:4px;margin-bottom:8px;line-height:1.8}
 .blink{animation:blink 1.2s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
 
 /* BLOQUE */
 .bloque-banner{background:rgba(180,100,0,.1);border:1px solid rgba(180,100,0,.3);border-radius:4px;padding:10px;text-align:center;margin-bottom:10px}
@@ -215,6 +216,18 @@ canvas{display:block;width:100%;height:115px}
     </div>
     <button class="btn-stop" id="btnStop" onclick="stopperPosition()">STOPPER MA POSITION</button>
     <div class="stop-msg" id="stopMsg"></div>
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 0;gap:8px">
+  <div style="position:relative;width:120px;height:120px">
+    <div style="position:absolute;inset:0;border-radius:50%;border:1px solid rgba(201,168,76,.15);animation:spin 12s linear infinite"></div>
+    <div style="position:absolute;inset:8px;border-radius:50%;border:1px solid rgba(201,168,76,.25);animation:spin 8s linear infinite reverse"></div>
+    <div style="position:absolute;inset:16px;border-radius:50%;border:1px solid rgba(201,168,76,.4);animation:spin 5s linear infinite"></div>
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column">
+      <div style="font-family:'Cinzel',serif;font-size:22px;color:#c9a84c;letter-spacing:4px;line-height:1">QAC</div>
+    </div>
+  </div>
+  <div style="font-family:'Cinzel',serif;font-size:11px;color:#5a4010;letter-spacing:4px;text-align:center;margin-top:4px">QUANTUM APEX CAPITAL</div>
+  <div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:#2a1f00;letter-spacing:3px;text-align:center">ESTABLISHED — LOS SANTOS</div>
+</div>
     <div class="warn">
       PRESENTEZ CE CERTIFICAT AU BUREAU QAC<br>
       POUR ENCAISSER VOTRE POSITION
