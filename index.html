@@ -226,8 +226,6 @@ canvas{display:block;width:100%;height:115px}
       <div class="pv-detail" id="pvLiveD">A RECUPERER : --- $</div>
       <div class="pv-commission" id="pvComm">Commission QAC (15%) : --- $</div>
     </div>
-    <button class="btn-stop" id="btnStop" onclick="stopperPosition()">STOPPER MA POSITION</button>
-    <div class="stop-msg" id="stopMsg"></div>
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 0;gap:8px">
   <div style="position:relative;width:120px;height:120px">
     <div style="position:absolute;inset:0;border-radius:50%;border:1px solid rgba(201,168,76,.15);animation:spin 12s linear infinite"></div>
@@ -436,30 +434,6 @@ function majLiveAffichage() {
   // Alertes
   document.getElementById('alerteRouge').style.display = (!up && Math.abs(pct) > 15) ? "block" : "none";
   document.getElementById('alerteOr').style.display    = (up && pct > 25) ? "block" : "none";
-}
-
-// STOPPER POSITION
-function stopperPosition() {
-  positionStoppee = true;
-  coursStoppe = cur;
-  var delta = coursStoppe - COURS_BASE;
-  var up = coursStoppe >= COURS_BASE;
-  var pv = (delta / COURS_BASE) * MISE;
-  var comm = pv > 0 ? pv * COMMISSION : 0;
-  var net = MISE + pv - comm;
-  var sgn = up ? "+" : "";
-
-  document.getElementById('btnStop').disabled = true;
-  document.getElementById('btnStop').textContent = "POSITION CLOTUREE";
-
-  var msg = document.getElementById('stopMsg');
-  msg.style.display = "block";
-  msg.innerHTML =
-    "COURS DE CLOTURE : " + coursStoppe.toFixed(2) + " $<br>" +
-    "PLUS-VALUE BRUTE : " + sgn + Math.round(pv) + " $<br>" +
-    "COMMISSION QAC (15%) : -" + Math.round(comm) + " $<br>" +
-    "NET A PERCEVOIR : " + Math.round(net) + " $<br><br>" +
-    "FAITES UN SCREENSHOT ET PRESENTEZ-LE AU BUREAU QAC";
 }
 
 // GRAPHIQUE
