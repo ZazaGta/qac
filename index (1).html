@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QAC - Certificat</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;700&family=Rajdhani:wght@400;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#050400;color:#c9a84c;font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden}
+#app{padding:14px;min-height:100vh;background:linear-gradient(160deg,#080600 0%,#050400 60%,#080500 100%)}
+
+/* LOGO */
+.logo-wrap{text-align:center;margin-bottom:10px}
+.logo-q{font-family:'Cinzel',serif;font-size:26px;font-weight:700;color:#c9a84c;letter-spacing:8px}
+.logo-sub{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:4px;color:#5a4010;margin-top:2px}
+.logo-line{height:1px;background:linear-gradient(90deg,transparent,#c9a84c66,transparent);margin:8px 0}
+
+/* BADGE */
+.badge{text-align:center;margin:6px 0}
+.badge span{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;color:#050400;background:#c9a84c;padding:3px 12px;border-radius:2px}
+
+/* CERT */
+.cert-title{text-align:center;font-family:'Cinzel',serif;font-size:12px;color:#7a6030;letter-spacing:3px;margin:8px 0 2px}
+.cert-num{text-align:center;font-family:'Share Tech Mono',monospace;font-size:9px;color:#2a1f00;margin-bottom:10px}
+
+/* NEWS TICKER */
+.ticker-wrap{background:#0a0700;border:1px solid #1a1200;border-radius:3px;overflow:hidden;margin-bottom:10px;padding:5px 0}
+.ticker-inner{display:flex;align-items:center;white-space:nowrap;animation:ticker 20s linear infinite}
+.ticker-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;color:#050400;background:#c9a84c;padding:2px 8px;margin-right:12px;flex-shrink:0}
+.ticker-txt{font-family:'Share Tech Mono',monospace;font-size:8px;color:#7a6030;letter-spacing:1px}
+@keyframes ticker{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+
+/* PHASES */
+#phaseCountdown{display:none}
+#phaseBloque{display:none}
+#phaseLive{display:none}
+
+/* COUNTDOWN */
+.cd-label{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;color:#5a4020;text-align:center;margin-bottom:6px}
+.cd-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;margin-bottom:10px}
+.cd-box{background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.15);border-radius:4px;padding:5px 3px;text-align:center}
+.cd-num{font-family:'Cinzel',serif;font-size:24px;color:#c9a84c;line-height:1}
+.cd-lbl{font-family:'Share Tech Mono',monospace;font-size:7px;color:#4a3810;letter-spacing:1px;margin-top:1px}
+
+/* INFO BLOCK */
+.info-block{background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.1);border-radius:4px;padding:8px 10px;margin-bottom:8px}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:2px 0}
+.info-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;color:#4a3810;letter-spacing:1px}
+.info-val{font-family:'Share Tech Mono',monospace;font-size:10px;color:#c9a84c}
+
+/* PENDING */
+.pending{text-align:center;padding:10px;font-family:'Share Tech Mono',monospace;font-size:8px;color:#2a1f00;letter-spacing:2px;border:1px dashed rgba(201,168,76,.08);border-radius:4px;margin-bottom:8px;line-height:1.8}
+.blink{animation:blink 1.2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+
+/* BLOQUE */
+.bloque-banner{background:rgba(180,100,0,.1);border:1px solid rgba(180,100,0,.3);border-radius:4px;padding:10px;text-align:center;margin-bottom:10px}
+.bloque-title{font-family:'Cinzel',serif;font-size:13px;color:#b46400;margin-bottom:4px}
+.bloque-sub{font-family:'Share Tech Mono',monospace;font-size:8px;color:#6a4010;letter-spacing:1px}
+
+/* COURS LIVE */
+.cours-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;color:#5a4020;text-align:center;margin-bottom:3px}
+.cours-val{font-family:'Cinzel',serif;font-size:38px;text-align:center;color:#c9a84c;line-height:1;margin-bottom:2px;transition:color .4s}
+.cours-delta{text-align:center;font-family:'Share Tech Mono',monospace;font-size:10px;margin-bottom:10px}
+
+/* CANVAS */
+.canvas-wrap{background:#030200;border:1px solid #100d00;border-radius:4px;margin-bottom:10px;overflow:hidden}
+canvas{display:block;width:100%;height:115px}
+
+/* PV BLOCK */
+.pv-block{border-radius:4px;padding:10px 12px;margin-bottom:8px;transition:all .4s}
+.pv-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;margin-bottom:3px}
+.pv-val{font-family:'Cinzel',serif;font-size:28px}
+.pv-detail{font-family:'Share Tech Mono',monospace;font-size:9px;margin-top:2px;opacity:.8}
+.pv-commission{font-family:'Share Tech Mono',monospace;font-size:8px;margin-top:4px;opacity:.5}
+
+/* PALIER */
+.palier{text-align:center;margin-bottom:8px}
+.palier span{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;padding:3px 12px;border-radius:2px}
+.palier-standard{color:#7a6030;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2)}
+.palier-premium{color:#c9a84c;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4)}
+.palier-elite{color:#050400;background:#c9a84c;border:1px solid #c9a84c}
+.palier-perte{color:#a02020;background:rgba(160,32,32,.1);border:1px solid rgba(160,32,32,.3)}
+
+/* STOPPER BTN */
+.btn-stop{width:100%;padding:10px;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;border:1px solid rgba(201,168,76,.3);background:rgba(201,168,76,.06);color:#c9a84c;border-radius:4px;cursor:pointer;margin-bottom:8px;transition:all .2s}
+.btn-stop:hover{background:rgba(201,168,76,.12);border-color:rgba(201,168,76,.6)}
+.btn-stop:disabled{opacity:.25;cursor:not-allowed}
+.stop-msg{font-family:'Share Tech Mono',monospace;font-size:8px;color:#4a3810;text-align:center;padding:8px;background:rgba(201,168,76,.04);border:1px dashed rgba(201,168,76,.1);border-radius:4px;margin-bottom:8px;display:none;line-height:1.8}
+
+/* ALERTE */
+.alerte-rouge{display:none;animation:pulseRed 1s infinite}
+@keyframes pulseRed{0%,100%{background:rgba(160,0,0,.08)}50%{background:rgba(160,0,0,.2)}}
+.alerte-or{display:none;animation:pulseOr 1.5s infinite}
+@keyframes pulseOr{0%,100%{background:rgba(201,168,76,.05)}50%{background:rgba(201,168,76,.18)}}
+
+/* WARN */
+.warn{font-family:'Share Tech Mono',monospace;font-size:7px;color:#1a1200;text-align:center;letter-spacing:1px;line-height:1.8;margin-top:6px}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:#050400;display:flex;align-items:center;justify-content:center;z-index:99;flex-direction:column;gap:10px}
+.loader-logo{font-family:'Cinzel',serif;font-size:22px;color:#c9a84c;letter-spacing:8px}
+.loader-bar{width:160px;height:2px;background:#1a1200;border-radius:1px;overflow:hidden}
+.loader-fill{height:100%;background:#c9a84c;animation:load 1.5s ease-in-out forwards}
+@keyframes load{0%{width:0}100%{width:100%}}
+.loader-sub{font-family:'Share Tech Mono',monospace;font-size:8px;color:#3a2800;letter-spacing:3px}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">Q A C</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+  <div class="loader-sub">CONNEXION NASDAQ...</div>
+</div>
+
+<div id="app" style="display:none">
+
+  <!-- HEADER -->
+  <div class="logo-wrap">
+    <div class="logo-q">Q A C</div>
+    <div class="logo-sub">QUANTUM APEX CAPITAL</div>
+    <div class="logo-line"></div>
+  </div>
+  <div class="badge"><span>INTRODUCTION EN BOURSE</span></div>
+  <div class="cert-title">CERTIFICAT D'INVESTISSEMENT</div>
+  <div class="cert-num" id="certNum">N QAC---------</div>
+
+  <!-- NEWS TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker-inner">
+      <span class="ticker-lbl">LIVE</span>
+      <span class="ticker-txt" id="tickerTxt">CONNEXION EN COURS...</span>
+    </div>
+  </div>
+
+  <!-- PHASE 1 : COUNTDOWN IPO -->
+  <div id="phaseCountdown">
+    <div class="cd-label">LANCEMENT DANS</div>
+    <div class="cd-grid">
+      <div class="cd-box"><div class="cd-num" id="cdH">00</div><div class="cd-lbl">HEURES</div></div>
+      <div class="cd-box"><div class="cd-num" id="cdM">00</div><div class="cd-lbl">MIN</div></div>
+      <div class="cd-box"><div class="cd-num" id="cdS">00</div><div class="cd-lbl">SEC</div></div>
+      <div class="cd-box"><div class="cd-num" id="cdMS">00</div><div class="cd-lbl">CS</div></div>
+    </div>
+    <div class="info-block">
+      <div class="info-row"><span class="info-lbl">EMETTEUR</span><span class="info-val">QUANTUM APEX CAPITAL</span></div>
+      <div class="info-row"><span class="info-lbl">TICKER</span><span class="info-val">QAC : NASDAQ</span></div>
+      <div class="info-row"><span class="info-lbl">COTATION BASE</span><span class="info-val">100.00 $</span></div>
+      <div class="info-row"><span class="info-lbl">MISE ENGAGEE</span><span class="info-val" id="miseCD">--- $</span></div>
+      <div class="info-row"><span class="info-lbl">INVESTISSEUR</span><span class="info-val" id="nomCD">---</span></div>
+    </div>
+    <div class="pending">
+      COTATION EN ATTENTE DE LANCEMENT<br>
+      <span class="blink">|</span> NASDAQ — SEC — FINRA — APPROBATION CONFIRMEE
+    </div>
+  </div>
+
+  <!-- PHASE 2 : POSITION BLOQUEE -->
+  <div id="phaseBloque">
+    <div class="bloque-banner">
+      <div class="bloque-title">POSITION BLOQUEE</div>
+      <div class="bloque-sub">DEBLOCAGE DANS</div>
+    </div>
+    <div class="cd-grid" style="margin-bottom:10px">
+      <div class="cd-box"><div class="cd-num" id="dbH">00</div><div class="cd-lbl">HEURES</div></div>
+      <div class="cd-box"><div class="cd-num" id="dbM">00</div><div class="cd-lbl">MIN</div></div>
+      <div class="cd-box"><div class="cd-num" id="dbS">00</div><div class="cd-lbl">SEC</div></div>
+      <div class="cd-box"><div class="cd-num" id="dbMS">00</div><div class="cd-lbl">CS</div></div>
+    </div>
+    <div class="cours-lbl">COURS EN DIRECT — QAC:NASDAQ</div>
+    <div class="cours-val" id="coursBloque">100.00 $</div>
+    <div class="cours-delta" id="deltaBloque">+0.00 $</div>
+    <div class="canvas-wrap"><canvas id="chartBloque"></canvas></div>
+    <div class="info-block">
+      <div class="info-row"><span class="info-lbl">INVESTISSEUR</span><span class="info-val" id="nomBloque">---</span></div>
+      <div class="info-row"><span class="info-lbl">MISE ENGAGEE</span><span class="info-val" id="miseBloque">--- $</span></div>
+      <div class="info-row"><span class="info-lbl">COURS D'ENTREE</span><span class="info-val">100.00 $</span></div>
+    </div>
+    <div class="pv-block" id="pvBloque" style="background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.15)">
+      <div class="pv-lbl" id="pvBloqueL" style="color:#5a4020">POSITION ACTUELLE</div>
+      <div class="pv-val" id="pvBloqueV" style="color:#c9a84c">+0 $</div>
+      <div class="pv-detail" id="pvBloqueD" style="color:#7a6030">--- $</div>
+    </div>
+    <button class="btn-stop" disabled>STOPPER MA POSITION — INDISPONIBLE</button>
+    <div class="warn">POSITION BLOQUEE JUSQU'AU DEBLOCAGE</div>
+  </div>
+
+  <!-- PHASE 3 : LIVE + LIBRE -->
+  <div id="phaseLive">
+    <div id="alerteRouge" class="alerte-rouge" style="border:1px solid rgba(160,0,0,.3);border-radius:4px;padding:8px;text-align:center;margin-bottom:8px">
+      <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:#c03030;letter-spacing:2px">ALERTE MARCHE — FORTE VOLATILITE</span>
+    </div>
+    <div id="alerteOr" class="alerte-or" style="border:1px solid rgba(201,168,76,.3);border-radius:4px;padding:8px;text-align:center;margin-bottom:8px">
+      <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:#c9a84c;letter-spacing:2px">HAUSSE EXCEPTIONNELLE DETECTEE</span>
+    </div>
+    <div class="cours-lbl">COURS EN DIRECT — QAC:NASDAQ</div>
+    <div class="cours-val" id="coursLive">100.00 $</div>
+    <div class="cours-delta" id="deltaLive">+0.00 $ — +0.00%</div>
+    <div class="canvas-wrap"><canvas id="chartLive"></canvas></div>
+    <div class="palier"><span id="palierBadge" class="palier-standard">RENDEMENT STANDARD</span></div>
+    <div class="info-block">
+      <div class="info-row"><span class="info-lbl">INVESTISSEUR</span><span class="info-val" id="nomLive">---</span></div>
+      <div class="info-row"><span class="info-lbl">MISE ENGAGEE</span><span class="info-val" id="miseLive">--- $</span></div>
+      <div class="info-row"><span class="info-lbl">COURS D'ENTREE</span><span class="info-val">100.00 $</span></div>
+      <div class="info-row"><span class="info-lbl">COURS ACTUEL</span><span class="info-val" id="coursSmall">---</span></div>
+    </div>
+    <div class="pv-block" id="pvLive">
+      <div class="pv-lbl" id="pvLiveL">PLUS-VALUE</div>
+      <div class="pv-val" id="pvLiveV">+0 $</div>
+      <div class="pv-detail" id="pvLiveD">A RECUPERER : --- $</div>
+      <div class="pv-commission" id="pvComm">Commission QAC (15%) : --- $</div>
+    </div>
+    <button class="btn-stop" id="btnStop" onclick="stopperPosition()">STOPPER MA POSITION</button>
+    <div class="stop-msg" id="stopMsg"></div>
+    <div class="warn">
+      PRESENTEZ CE CERTIFICAT AU BUREAU QAC<br>
+      POUR ENCAISSER VOTRE POSITION
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ================================================
+// PARAMETRES — modifiez avant de coller dans le post-it
+var MISE = 5000;
+var NOM  = "J. DUPONT";
+// URL de votre fichier cours.json sur GitHub Pages
+var JSON_URL = "https://VOTRE-PSEUDO.github.io/qac/cours.json";
+// ================================================
+
+var COURS_BASE = 100;
+var COMMISSION = 0.15;
+var hist = [], cur = COURS_BASE, tpx = 0, lastTS = null;
+var data = { cours_cible: 100, phase: "countdown", vitesse: 0.015, news: "CONNEXION...", date_lancement: "", date_deblocage: "" };
+var phaseActive = "";
+var positionStoppee = false;
+var coursStoppe = 0;
+
+// Numero certificat
+var seed = MISE * 7 + NOM.length * 13 + 42;
+var certId = "QAC-" + (seed % 9000 + 1000) + "-" + (MISE % 900 + 100) + "-" + Math.floor(MISE / 10);
+document.getElementById('certNum').innerHTML = "N " + certId;
+
+// Remplir les champs
+function remplirChamps() {
+  var mis = MISE.toLocaleString('fr-FR') + " $";
+  document.getElementById('miseCD').innerHTML    = mis;
+  document.getElementById('nomCD').innerHTML     = NOM;
+  document.getElementById('nomBloque').innerHTML = NOM;
+  document.getElementById('miseBloque').innerHTML= mis;
+  document.getElementById('nomLive').innerHTML   = NOM;
+  document.getElementById('miseLive').innerHTML  = mis;
+}
+
+// Generer historique
+function genHist(cible) {
+  if (hist.length === 0) {
+    for (var i = 0; i <= 60; i++) {
+      var r = i / 60;
+      var noise = (Math.sin(i * 0.9) * 2 + Math.cos(i * 1.4) * 1.5) * (1 - r * 0.2);
+      hist.push(COURS_BASE + (cible - COURS_BASE) * (r * r) + noise);
+    }
+    cur = hist[hist.length - 1];
+  }
+}
+
+function pad(n) { return n < 10 ? "0" + n : "" + n; }
+
+// Fetch JSON
+function fetchData() {
+  fetch(JSON_URL + "?t=" + Date.now())
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      data = d;
+      appliquerPhase();
+      majTicker();
+    })
+    .catch(function() {});
+  setTimeout(fetchData, 30000);
+}
+
+function majTicker() {
+  var el = document.getElementById('tickerTxt');
+  var txt = data.news + " — QAC:NASDAQ — COURS : " + cur.toFixed(2) + "$ — " + data.news;
+  el.textContent = txt;
+}
+
+// Determiner la phase
+function appliquerPhase() {
+  var now = Date.now();
+  var tLancement = data.date_lancement ? new Date(data.date_lancement).getTime() : 0;
+  var tDeblocage = data.date_deblocage ? new Date(data.date_deblocage).getTime() : 0;
+
+  var phase = data.phase;
+  if (phase === "countdown" && tLancement && now >= tLancement) phase = "bloque";
+  if (phase === "bloque" && tDeblocage && now >= tDeblocage) phase = "live";
+
+  if (phase !== phaseActive) {
+    phaseActive = phase;
+    document.getElementById('phaseCountdown').style.display = phase === "countdown" ? "block" : "none";
+    document.getElementById('phaseBloque').style.display    = phase === "bloque"    ? "block" : "none";
+    document.getElementById('phaseLive').style.display      = phase === "live"      ? "block" : "none";
+    genHist(data.cours_cible);
+  }
+}
+
+// COUNTDOWN IPO
+function majCountdown() {
+  if (phaseActive !== "countdown") return;
+  var tLancement = new Date(data.date_lancement).getTime();
+  var diff = tLancement - Date.now();
+  if (diff <= 0) { appliquerPhase(); return; }
+  var h = Math.floor(diff / 3600000);
+  var m = Math.floor((diff % 3600000) / 60000);
+  var s = Math.floor((diff % 60000) / 1000);
+  var cs = Math.floor((diff % 1000) / 10);
+  document.getElementById('cdH').innerHTML  = pad(h);
+  document.getElementById('cdM').innerHTML  = pad(m);
+  document.getElementById('cdS').innerHTML  = pad(s);
+  document.getElementById('cdMS').innerHTML = pad(cs);
+}
+
+// COUNTDOWN DEBLOCAGE
+function majDeblocage() {
+  if (phaseActive !== "bloque") return;
+  var tDeblocage = new Date(data.date_deblocage).getTime();
+  var diff = tDeblocage - Date.now();
+  if (diff <= 0) { appliquerPhase(); return; }
+  var h = Math.floor(diff / 3600000);
+  var m = Math.floor((diff % 3600000) / 60000);
+  var s = Math.floor((diff % 60000) / 1000);
+  var cs = Math.floor((diff % 1000) / 10);
+  document.getElementById('dbH').innerHTML  = pad(h);
+  document.getElementById('dbM').innerHTML  = pad(m);
+  document.getElementById('dbS').innerHTML  = pad(s);
+  document.getElementById('dbMS').innerHTML = pad(cs);
+}
+
+// MAJ AFFICHAGE BLOQUE
+function majBloqueAffichage() {
+  var delta = cur - COURS_BASE;
+  var up = cur >= COURS_BASE;
+  var col = up ? "#c9a84c" : "#a02020";
+  var sgn = up ? "+" : "";
+  document.getElementById('coursBloque').innerHTML = cur.toFixed(2) + " $";
+  document.getElementById('coursBloque').style.color = col;
+  document.getElementById('deltaBloque').innerHTML = sgn + delta.toFixed(2) + " $ — " + sgn + ((delta / COURS_BASE) * 100).toFixed(2) + "%";
+  document.getElementById('deltaBloque').style.color = col;
+  var pv = (delta / COURS_BASE) * MISE;
+  var rec = MISE + pv;
+  document.getElementById('pvBloqueV').innerHTML = sgn + Math.round(pv) + " $";
+  document.getElementById('pvBloqueD').innerHTML = "ESTIMATION : " + Math.round(rec) + " $ (non encaissable)";
+  document.getElementById('pvBloqueV').style.color = col;
+  document.getElementById('pvBloqueD').style.color = col;
+  var pb = document.getElementById('pvBloque');
+  pb.style.background = up ? "rgba(201,168,76,.06)" : "rgba(160,32,32,.06)";
+  pb.style.border = up ? "1px solid rgba(201,168,76,.15)" : "1px solid rgba(160,32,32,.15)";
+}
+
+// MAJ AFFICHAGE LIVE
+function majLiveAffichage() {
+  if (positionStoppee) return;
+  var delta = cur - COURS_BASE;
+  var pct = (delta / COURS_BASE) * 100;
+  var up = cur >= COURS_BASE;
+  var col = up ? "#c9a84c" : "#a02020";
+  var sgn = up ? "+" : "";
+
+  document.getElementById('coursLive').innerHTML = cur.toFixed(2) + " $";
+  document.getElementById('coursLive').style.color = col;
+  document.getElementById('deltaLive').innerHTML = sgn + delta.toFixed(2) + " $ — " + sgn + pct.toFixed(2) + "%";
+  document.getElementById('deltaLive').style.color = col;
+  document.getElementById('coursSmall').innerHTML = cur.toFixed(2) + " $";
+  document.getElementById('coursSmall').style.color = col;
+
+  var pv = (delta / COURS_BASE) * MISE;
+  var comm = Math.abs(pv > 0 ? pv * COMMISSION : 0);
+  var rec = MISE + pv - comm;
+
+  document.getElementById('pvLiveV').innerHTML = sgn + Math.round(pv) + " $";
+  document.getElementById('pvLiveD').innerHTML = "A RECUPERER : " + Math.round(rec) + " $";
+  document.getElementById('pvComm').innerHTML  = "Commission QAC (15%) : -" + Math.round(comm) + " $";
+
+  var pvBlock = document.getElementById('pvLive');
+  document.getElementById('pvLiveL').innerHTML = up ? "PLUS-VALUE" : "MOINS-VALUE";
+  document.getElementById('pvLiveV').style.color = col;
+  document.getElementById('pvLiveD').style.color = col;
+  pvBlock.style.background = up ? "rgba(201,168,76,.07)" : "rgba(160,32,32,.07)";
+  pvBlock.style.border = up ? "1px solid rgba(201,168,76,.25)" : "1px solid rgba(160,32,32,.25)";
+
+  // Palier
+  var badge = document.getElementById('palierBadge');
+  if (!up) {
+    badge.textContent = "POSITION EN PERTE";
+    badge.className = "palier-perte";
+  } else if (pct < 10) {
+    badge.textContent = "RENDEMENT STANDARD";
+    badge.className = "palier-standard";
+  } else if (pct < 30) {
+    badge.textContent = "RENDEMENT PREMIUM";
+    badge.className = "palier-premium";
+  } else {
+    badge.textContent = "RENDEMENT ELITE — INVESTISSEUR OR";
+    badge.className = "palier-elite";
+  }
+
+  // Alertes
+  document.getElementById('alerteRouge').style.display = (!up && Math.abs(pct) > 15) ? "block" : "none";
+  document.getElementById('alerteOr').style.display    = (up && pct > 25) ? "block" : "none";
+}
+
+// STOPPER POSITION
+function stopperPosition() {
+  positionStoppee = true;
+  coursStoppe = cur;
+  var delta = coursStoppe - COURS_BASE;
+  var up = coursStoppe >= COURS_BASE;
+  var pv = (delta / COURS_BASE) * MISE;
+  var comm = pv > 0 ? pv * COMMISSION : 0;
+  var net = MISE + pv - comm;
+  var sgn = up ? "+" : "";
+
+  document.getElementById('btnStop').disabled = true;
+  document.getElementById('btnStop').textContent = "POSITION CLOTUREE";
+
+  var msg = document.getElementById('stopMsg');
+  msg.style.display = "block";
+  msg.innerHTML =
+    "COURS DE CLOTURE : " + coursStoppe.toFixed(2) + " $<br>" +
+    "PLUS-VALUE BRUTE : " + sgn + Math.round(pv) + " $<br>" +
+    "COMMISSION QAC (15%) : -" + Math.round(comm) + " $<br>" +
+    "NET A PERCEVOIR : " + Math.round(net) + " $<br><br>" +
+    "FAITES UN SCREENSHOT ET PRESENTEZ-LE AU BUREAU QAC";
+}
+
+// GRAPHIQUE
+function dessiner(canvasId) {
+  var c = document.getElementById(canvasId);
+  if (!c) return;
+  var ctx = c.getContext('2d');
+  var W = c.width = c.offsetWidth || 300;
+  var H = c.height = 115;
+  var P = 10;
+  ctx.clearRect(0, 0, W, H);
+  var n = hist.length;
+  if (n < 2) return;
+  var mn = Math.min.apply(null, hist) - 1;
+  var mx = Math.max.apply(null, hist) + 1;
+  if (mx === mn) mx = mn + 1;
+  function tx(i) { return P + (i / (n - 1)) * (W - P * 2); }
+  function ty(v) { return H - P - ((v - mn) / (mx - mn)) * (H - P * 2); }
+  var y0 = ty(COURS_BASE);
+  ctx.setLineDash([4, 4]);
+  ctx.strokeStyle = "rgba(201,168,76,.12)";
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(P, y0); ctx.lineTo(W - P, y0); ctx.stroke();
+  ctx.setLineDash([]);
+  var up = cur >= COURS_BASE;
+  ctx.beginPath();
+  ctx.moveTo(tx(0), H - P);
+  for (var i = 0; i < n; i++) ctx.lineTo(tx(i), ty(hist[i]));
+  ctx.lineTo(tx(n - 1), H - P);
+  ctx.closePath();
+  var g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, up ? "rgba(201,168,76,.22)" : "rgba(160,32,32,.22)");
+  g.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = g;
+  ctx.fill();
+  ctx.beginPath();
+  for (var i = 0; i < n; i++) {
+    if (i === 0) ctx.moveTo(tx(i), ty(hist[i]));
+    else ctx.lineTo(tx(i), ty(hist[i]));
+  }
+  ctx.strokeStyle = up ? "#c9a84c" : "#c03030";
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(tx(n - 1), ty(hist[n - 1]), 3, 0, Math.PI * 2);
+  ctx.fillStyle = "#fff";
+  ctx.fill();
+}
+
+// BOUCLE PRINCIPALE
+function loop(ts) {
+  if (!lastTS) lastTS = ts;
+  var dt = (ts - lastTS) / 1000;
+  lastTS = ts;
+
+  tpx += dt;
+  if (tpx >= 0.4) {
+    tpx = 0;
+    if (!positionStoppee) {
+      cur += (Math.random() - 0.48) * 1.8;
+      cur += (data.cours_cible - cur) * (data.vitesse || 0.015);
+      if (cur < 1) cur = 1;
+      hist.push(cur);
+      if (hist.length > 80) hist.shift();
+    }
+  }
+
+  majCountdown();
+  majDeblocage();
+
+  if (phaseActive === "bloque") {
+    majBloqueAffichage();
+    dessiner('chartBloque');
+  }
+  if (phaseActive === "live") {
+    majLiveAffichage();
+    dessiner('chartLive');
+  }
+
+  requestAnimationFrame(loop);
+}
+
+// DEMARRAGE
+remplirChamps();
+setTimeout(function() {
+  document.getElementById('loader').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  fetchData();
+  appliquerPhase();
+  requestAnimationFrame(loop);
+}, 1800);
+</script>
+</body>
+</html>
