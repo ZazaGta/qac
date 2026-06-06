@@ -1,9 +1,8 @@
 {
   "cours_cible": 127,
-  "phase": "live",
+  "phase": "countdown",
   "vitesse": 0.015,
-  "news": "QUANTUM APEX CAPITAL — IPO LANCEE — QAC EN HAUSSE SUR LE NASDAQ",
-  "tendance": "hausse",
+  "news": "QUANTUM APEX CAPITAL — IPO EN COURS DE FINALISATION",
   "date_lancement": "2026-06-01T20:00:00",
   "date_deblocage": "2026-06-10T20:00:00"
 }
