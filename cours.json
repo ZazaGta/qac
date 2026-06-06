@@ -1,8 +1,8 @@
 {
-  "cours_cible": 50,
-  "phase": "live",
+  "cours_cible": 100,
+  "phase": "countdown",
   "vitesse": 0.015,
-  "news": "WEAZEL NEWS — LE GOUVERNEUR REVIENS SUR SON SOUHAIT D'INVESTIR DANS QUANTUM - PEUR SUR LES MARCHES",
-  "date_lancement": "2026-06-06T12:00:00",
-  "date_deblocage": "2026-06-06T12:00:00"
+  "news": "QUANTUM APEX CAPITAL — IPO EN COURS DE FINALISATION — NASDAQ CONFIRME LE LANCEMENT",
+  "date_lancement": "2026-06-10T20:00:00",
+  "date_deblocage": "2026-06-13T20:00:00"
 }
