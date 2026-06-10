@@ -1,8 +1,8 @@
 {
-  "cours_cible": 100,
-  "phase": "countdown",
-  "vitesse": 0.015,
-  "news": "QUANTUM APEX CAPITAL — IPO EN COURS DE FINALISATION — NASDAQ CONFIRME LE LANCEMENT",
-  "date_lancement": "2026-06-12T20:00:00",
-  "date_deblocage": "2026-06-15T20:00:00"
-}
+  "cours_cible": 70,
+  "phase": "bloque",
+  "vitesse": 0.008,
+  "news": "WEAZEL NEWS — LES MARCHES EUROPEENS RESTENT TRES PRUDENTS ET N'INVESTISSENT PAS AUTANT QUE PREVU DANS QUANTUM APEX CAPITAL — LE TITRE RECULE",
+  "date_lancement": "2026-06-10T12:00:00",
+  "date_deblocage": "2026-06-13T20:00:00"
+} 
